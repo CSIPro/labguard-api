@@ -17,18 +17,18 @@ export class ReportesController {
     return this.reportesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reportesService.findOne(+id);
+  @Get('id')
+  findOne(@Param('id') id: number) {
+    return this.reportesService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReporteDto: UpdateReporteDto) {
-    return this.reportesService.update(+id, updateReporteDto);
+  @Patch('id')
+  update(@Param('id') id: number, @Body() updateReporteDto: UpdateReporteDto) {
+    return this.reportesService.update(id, updateReporteDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reportesService.remove(+id);
+  @Delete('id')
+  remove(@Param('id') id: number) {
+    return this.reportesService.remove(id);
   }
 }
