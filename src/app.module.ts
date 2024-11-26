@@ -10,7 +10,7 @@ import { LaboratoriosModule } from './laboratorios/laboratorios.module';
       type: "mysql",
       host: "localhost",
       port: 3307,
-      username: "root",
+      username: "labguard_user",
       password: "root",
       database: "labguard",
       autoLoadEntities: true,
