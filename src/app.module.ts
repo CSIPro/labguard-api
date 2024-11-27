@@ -6,17 +6,17 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: "mysql",
-      host: "localhost",
-      port: 3307,
-      username: "labguard_user",
-      password: "root",
-      database: "labguard",
-      autoLoadEntities: true,
-      synchronize: true,
+      type: 'postgres',              
+      host: 'localhost',             
+      port: 5432,                    
+      username: 'labguard_user',    
+      password: 'Labguard@Admin',       
+      database: 'labguard',          
+      autoLoadEntities: true,        
+      synchronize: true,            
     }),
     UsersModule,
-    AuthModule,
+    
   ],
   controllers: [],
   providers: [],
