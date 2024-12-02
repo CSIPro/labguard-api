@@ -12,7 +12,11 @@ import {
   
   @Injectable()
   export class AuthService {
-    constructor(private readonly usersService: UsersService) {}
+    constructor(
+      private readonly usersService: UsersService,
+      private readonly jwtService: JwtService
+
+    ) {}
   
     async register({ password, email, name }: RegisterDto) {
       const user = await this.usersService.findOneByEmail(email);
@@ -46,9 +50,12 @@ import {
       if (!isPasswordValid) {
         throw new UnauthorizedException("Invalid password");
       }
-  
+      const payload = { email: user.email };
+
+      const token = await this.jwtService.signAsync(payload);
       return {
         email: user.email,
+        token: token
       };
     }
   }
