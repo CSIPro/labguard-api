@@ -30,6 +30,6 @@ export class LaboratorioService {
   }
 
   remove(id: number) {
-    return this.labsRepository.delete(id)
+    return this.labsRepository.softDelete(id)
   }
 }
