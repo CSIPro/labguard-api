@@ -8,5 +8,7 @@ import { Laboratorio } from './entities/laboratorio.entity';
   imports:[TypeOrmModule.forFeature([Laboratorio])],
   controllers: [LaboratorioController],
   providers: [LaboratorioService],
+  exports: [TypeOrmModule],
+
 })
 export class LaboratorioModule {}

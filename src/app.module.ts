@@ -3,6 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { LaboratorioModule } from './laboratorio/laboratorio.module';
+import { ReporteModule } from './reporte/reporte.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { LaboratorioModule } from './laboratorio/laboratorio.module';
     }),
     UsersModule,
     AuthModule,
-    LaboratorioModule
+    LaboratorioModule,
+    ReporteModule
     
   ],
   controllers: [],
