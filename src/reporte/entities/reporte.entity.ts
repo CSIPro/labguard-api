@@ -6,7 +6,8 @@ export class Reporte {
   id: number;
   @Column()
   tipoMant: string;
-
+  @Column()
+  estado: string;
   @Column()
   objeto: string;
 

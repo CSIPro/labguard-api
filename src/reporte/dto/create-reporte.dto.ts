@@ -15,5 +15,8 @@ export class CreateReporteDto {
   especificacion:string;
 
   @IsString()
+  estado:string='pendiente';
+
+  @IsString()
   descripcion:string;
 }
