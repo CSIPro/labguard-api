@@ -13,50 +13,54 @@ export class ReporteService {
     private reportsRepository: Repository<Reporte>,
     @InjectRepository(Laboratorio)
     private labsRepository: Repository<Laboratorio>
-  ){}
-  async create(createReportesdto: CreateReporteDto){
+  ) {}
+
+  async create(createReportesdto: CreateReporteDto) {
     try {
       const laboratorio = await this.validateLaboratorio(createReportesdto.laboratorio);
-      
+
       const reporte = this.reportsRepository.create({
         ...createReportesdto,
         laboratorio: laboratorio,
       });
-  
+
       return await this.reportsRepository.save(reporte);
     } catch (error) {
       // Manejo de errores - puedes lanzar una excepción específica o devolver un mensaje
       throw new Error(`Error al crear el reporte: ${error.message}`);
     }
-   }
+  }
 
   findAll() {
-    return this.reportsRepository.find()
+    return this.reportsRepository.find();
   }
 
   findOne(id: number) {
-    return this.reportsRepository.findOneBy({id})
+    return this.reportsRepository.findOneBy({ id });
   }
 
   async update(id: number, updateReporte: UpdateReporteDto) {
-    await this.findOne(id );
+    await this.findOne(id);
     return await this.reportsRepository.update(id, {
       ...updateReporte,
-      laboratorio: updateReporte.laboratorio ? await this.validateLaboratorio(updateReporte.laboratorio) : undefined,
-    })
+      laboratorio: updateReporte.laboratorio
+        ? await this.validateLaboratorio(updateReporte.laboratorio)
+        : undefined,
+    });
   }
 
   remove(id: number) {
-    return this.reportsRepository.softDelete(id)
+    return this.reportsRepository.softDelete(id);
   }
 
-  private async validateLaboratorio(laboratorio: string) {
-    const laboratorioEntity = await this.labsRepository.findOneBy({ nombre:laboratorio });
-  
+  private async validateLaboratorio(laboratorioId: number) {
+    // Cambiar la búsqueda para usar laboratorioId en lugar de nombre
+    const laboratorioEntity = await this.labsRepository.findOneBy({ id: laboratorioId });
+
     if (!laboratorioEntity) {
-      throw new BadRequestException('laboratorio not found');
+      throw new BadRequestException('Laboratorio no encontrado');
     }
-  
+
     return laboratorioEntity;
   }
 }
