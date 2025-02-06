@@ -1,4 +1,5 @@
 import { Laboratorio } from "src/laboratorio/entities/laboratorio.entity";
+import { User } from "src/users/entities/user.entity";
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne } from "typeorm";
 @Entity()
 export class Reporte {
@@ -22,7 +23,10 @@ export class Reporte {
   })
   laboratorio:Laboratorio
   
-
+  @ManyToOne(()=>User, (usuarioMant)=>usuarioMant.id, {
+    eager:true
+  })
+  usuarioMant:User
   @CreateDateColumn()
   creado: Date;
 

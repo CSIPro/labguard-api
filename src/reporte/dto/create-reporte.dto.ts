@@ -3,6 +3,9 @@ import { IsDate, IsOptional, IsString, IsNumber } from "class-validator";
 export class CreateReporteDto {
   @IsNumber()
   laboratorio:number;
+  @IsOptional()
+  @IsNumber()
+  usuarioMant:number;
   
   @IsString()
   tipoMant:string;

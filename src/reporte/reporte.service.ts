@@ -5,23 +5,27 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Reporte } from './entities/reporte.entity';
 import { Repository } from 'typeorm';
 import { Laboratorio } from 'src/laboratorio/entities/laboratorio.entity';
-
+import { User } from 'src/users/entities/user.entity';
 @Injectable()
 export class ReporteService {
   constructor(
     @InjectRepository(Reporte)
     private reportsRepository: Repository<Reporte>,
     @InjectRepository(Laboratorio)
-    private labsRepository: Repository<Laboratorio>
-  ) {}
+    private labsRepository: Repository<Laboratorio>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>
+  ) { }
 
   async create(createReportesdto: CreateReporteDto) {
     try {
       const laboratorio = await this.validateLaboratorio(createReportesdto.laboratorio);
+      const usuario = await this.validateUsuario(createReportesdto.usuarioMant);
 
       const reporte = this.reportsRepository.create({
         ...createReportesdto,
         laboratorio: laboratorio,
+        usuarioMant: usuario
       });
 
       return await this.reportsRepository.save(reporte);
@@ -46,6 +50,9 @@ export class ReporteService {
       laboratorio: updateReporte.laboratorio
         ? await this.validateLaboratorio(updateReporte.laboratorio)
         : undefined,
+      usuarioMant: updateReporte.usuarioMant
+        ? await this.validateUsuario(updateReporte.usuarioMant)
+        : undefined
     });
   }
 
@@ -54,7 +61,6 @@ export class ReporteService {
   }
 
   private async validateLaboratorio(laboratorioId: number) {
-    // Cambiar la búsqueda para usar laboratorioId en lugar de nombre
     const laboratorioEntity = await this.labsRepository.findOneBy({ id: laboratorioId });
 
     if (!laboratorioEntity) {
@@ -62,5 +68,14 @@ export class ReporteService {
     }
 
     return laboratorioEntity;
+  }
+  private async validateUsuario(usuarioId: number) {
+    const userEntity = await this.userRepository.findOneBy({ id: usuarioId });
+
+    if (!userEntity) {
+      throw new BadRequestException('Usuario no encontrado');
+    }
+
+    return userEntity;
   }
 }
