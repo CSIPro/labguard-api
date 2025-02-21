@@ -20,17 +20,20 @@ export class ReporteService {
   async create(createReportesdto: CreateReporteDto) {
     try {
       const laboratorio = await this.validateLaboratorio(createReportesdto.laboratorio);
-      const usuario = await this.validateUsuario(createReportesdto.usuarioMant);
 
+      let usuario = null;
+      if (createReportesdto.usuarioMant !== null) {
+        usuario = await this.validateUsuario(createReportesdto.usuarioMant);
+      }
+  
       const reporte = this.reportsRepository.create({
         ...createReportesdto,
         laboratorio: laboratorio,
         usuarioMant: usuario
       });
-
+  
       return await this.reportsRepository.save(reporte);
     } catch (error) {
-      // Manejo de errores - puedes lanzar una excepción específica o devolver un mensaje
       throw new Error(`Error al crear el reporte: ${error.message}`);
     }
   }
@@ -44,16 +47,24 @@ export class ReporteService {
   }
 
   async update(id: number, updateReporte: UpdateReporteDto) {
-    await this.findOne(id);
-    return await this.reportsRepository.update(id, {
+    const reporte = await this.findOne(id);
+  
+    if (!reporte) {
+      throw new BadRequestException("Reporte no encontrado");
+    }
+  
+    const laboratorio = updateReporte.laboratorio 
+      ? await this.validateLaboratorio(updateReporte.laboratorio)
+      : undefined;
+  
+    const updatedReporte = await this.reportsRepository.update(id, {
       ...updateReporte,
-      laboratorio: updateReporte.laboratorio
-        ? await this.validateLaboratorio(updateReporte.laboratorio)
-        : undefined,
-      usuarioMant: updateReporte.usuarioMant
+      laboratorio: laboratorio,
+      usuarioMant: updateReporte.usuarioMant 
         ? await this.validateUsuario(updateReporte.usuarioMant)
-        : undefined
+        : null,
     });
+    return updatedReporte;
   }
 
   remove(id: number) {
