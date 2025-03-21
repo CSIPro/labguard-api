@@ -42,4 +42,4 @@ jobs:
 
       - name: SSH into production, install dependencies, and deploy
         run: |
-          ssh unison-isi "cd /var/www/labguard-api && npm ci && npm run db:sync:prod && npm run build && pm2 restart labguard-api"
+          ssh unison-isi "cd /var/www/labguard-api && npm ci && npm run db:sync:prod && npm run build && pm2 reload labguard-api"
