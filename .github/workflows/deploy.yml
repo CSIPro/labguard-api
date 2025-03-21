@@ -38,8 +38,8 @@ jobs:
 
       - name: Transfer files to Production
         run: |
-          rsync -arvz --delete ./ unison-isi:/var/www/labguard-api
+          rsync -arvz --delete --exclude="node_modules" --exclude=".git" ./ unison-isi:/var/www/labguard-api
 
-      - name: SSH into production, build, and deploy
+      - name: SSH into production, install dependencies, and deploy
         run: |
-          ssh unison-isi "cd /var/www/labguard-api && npm run db:sync:prod && npm run build && pm2 restart labguard-api"
+          ssh unison-isi "cd /var/www/labguard-api && npm ci && npm run db:sync:prod && npm run build && pm2 restart labguard-api"
